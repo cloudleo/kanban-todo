@@ -46,12 +46,24 @@ export default class App extends React.Component {
       columns,
     })    
   }
+
+  handleDelete = (e) => {
+    let indexColumn = +e.currentTarget.getAttribute("datacindex");
+    let index = +e.currentTarget.getAttribute("dataindex");
+    let columns = this.state.columns;
+    columns[indexColumn].cards.splice(index,1);
+    this.setState({
+      columns,
+    })     
+  }
+
   render(){
     return (
       <div className="App">
         {  this.state.columns.map((el,index) => (
             <Column index={index} 
                   key={`Columnkey=${index}`} 
+                  handleDelete={this.handleDelete}
                   handleClick={this.handleClick} 
                   handleChange={this.handleChange} 
                   {...el} 

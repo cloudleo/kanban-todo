@@ -68,3 +68,20 @@ button {
   color: #767670;
   font-size: 18px;
 }
+
+.delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 5px;
+  width: 20px;
+  font-size: 15px;
+}
+
+.delete:hover {
+  background-color: red;
+  color: white;
+  border-style: solid;
+  border-width: 3px;
+  border-color: black;
+}
