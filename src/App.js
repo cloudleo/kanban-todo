@@ -1,26 +1,70 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Column from './Component/Column';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      columns: props.data
+    }
+  }
+
+
+  componentDidUpdate(prevProps) {
+      window.localStorage.setItem("data", JSON.stringify(this.state.columns));
+  }
+
+  handleClick = (e) => {
+    let column = e.currentTarget.getAttribute("datacindex");
+    const value = window.prompt(" Add card description");
+    let columns = this.state.columns;
+    columns[column].cards.push({text: value});
+    value && this.setState({
+      columns,
+    });
+
+  }  
+
+  handleChange = (e) => {
+    let value = e.currentTarget.getAttribute("name");
+    let indexColumn = +e.currentTarget.getAttribute("datacindex");
+    let index = +e.currentTarget.getAttribute("dataindex");
+    let columns = this.state.columns;
+
+    let temp = columns[indexColumn].cards[index];
+    if(value === "left"){
+      columns[indexColumn].cards.splice(index,1);
+      columns[indexColumn - 1].cards.push(temp);
+
+    }else{
+      columns[indexColumn].cards.splice(index,1);
+      columns[indexColumn + 1].cards.push(temp);
+    }
+    this.setState({
+      columns,
+    })    
+  }
+  render(){
+    return (
+      <div className="App">
+        {  this.state.columns.map((el,index) => (
+            <Column index={index} 
+                  key={`Columnkey=${index}`} 
+                  handleClick={this.handleClick} 
+                  handleChange={this.handleChange} 
+                  {...el} 
+
+            />
+          ))
+        }
+      </div>
+    );
+  }
 }
 
-export default App;
+
+// 20 mill used carss
+
+//15 fields for vehicle
